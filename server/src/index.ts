@@ -1,23 +1,26 @@
 import express, { Application, Request, Response } from 'express';
-const controllers = require('../controllers/index');
+// const controllers = require('../controllers/index');
 import "reflect-metadata";
 import { createConnection } from "typeorm";
 import { User } from "./entity/User";
 import { Text } from './entity/Text';
+const cors = require('cors');
 
-createConnection().then(connection => {
-    const userRepository = connection.getRepository(User);
-    const TextRepository = connection.getRepository(Text);
+createConnection().then(async (connection) => {
+    const userRepository = await connection.getRepository(User);
+    const TextRepository = await connection.getRepository(Text);
 
     const app: Application = express();
     const port: number = 3000;
 
     app.use(express.json());
     app.use(express.urlencoded({ extended: true }));
+    app.use(cors());
 
     // read
     app.get('/readtext', async (req: Request, res: Response)=>{
         const result = await TextRepository.find();
+        console.log(result);
         res.status(200).json(result);
     });
     // create
