@@ -38,6 +38,7 @@ createConnection().then(async (connection) => {
     })
     //update
     app.post('/updateText', async (req: Request, res: Response)=>{
+        console.log("req.body : ", req.body);
         await TextRepository.save({
             id: req.body.id,
             title: req.body.title,
