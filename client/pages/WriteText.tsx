@@ -24,11 +24,13 @@ const WriteText = () => {
                             text
                         }
                     }).then((data) => {
-                        console.log(data);
+                        setTitle("");
+                        setText("");
                     })
                         .catch((err) => {
                             console.error(err)
                         })
+
                 }}>제출</button>
             </div>
         </div>

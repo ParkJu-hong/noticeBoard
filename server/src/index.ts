@@ -20,7 +20,6 @@ createConnection().then(async (connection) => {
     // read
     app.get('/readtext', async (req: Request, res: Response)=>{
         const result = await TextRepository.find();
-        console.log(result);
         res.status(200).json(result);
     });
     // create

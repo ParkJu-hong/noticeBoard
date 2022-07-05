@@ -25,11 +25,6 @@ const UpdateText = () => {
             })
     }, [forCleanUp])
 
-    // const reviseTitle = (e : any) => {
-    //     setRevisedTitle(e.target.value)
-    // }
-
-
     const forReviseText = (e: React.MouseEvent<HTMLButtonElement>, id: number) => {
         e.preventDefault();
 
@@ -44,6 +39,9 @@ const UpdateText = () => {
             }
         }).then((data) => {
             console.log(data);
+            setRevisedText("");
+            setRevisedTitle("");
+            setForCleanUp((prev) => !prev);
         })
             .catch((err) => {
                 console.error(err)
@@ -88,7 +86,7 @@ const UpdateText = () => {
                         ></input>
                         <button onClick={(e) => {
                             setIsRevised((prev) => !prev);
-                            forReviseText(e, el.id)
+                            forReviseText(e, el.id);
                         }} name="revise">수정 보내기</button>
                     </div> : <></>
                 }
