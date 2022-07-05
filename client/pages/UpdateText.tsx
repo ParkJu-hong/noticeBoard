@@ -12,8 +12,8 @@ const UpdateText = () => {
 
     const [texts, setTexts] = useState([]);
     const [forCleanUp, setForCleanUp] = useState<boolean>(true);
-    const [isRevise, setIsRevise] = useState<boolean>(false);
-    const [isReviseId, setIsReviseId] = useState(0);
+    const [isRevised, setIsRevised] = useState<boolean>(false);
+    const [isRevisedId, setIsRevisedId] = useState(0);
     const [revisedText, setRevisedText] = useState<string>("");
     const [revisedTitle, setRevisedTitle] = useState<string>("");
 
@@ -32,9 +32,8 @@ const UpdateText = () => {
 
     const forReviseText = (e: React.MouseEvent<HTMLButtonElement>, id: number) => {
         e.preventDefault();
-        console.log(id)
-        setRevisedText("");
-        setRevisedTitle("");
+
+        if (revisedTitle.length === 0 || revisedText.length === 0) return;
         axios({
             method: 'post',
             url: 'http://localhost:3000/updateText',
@@ -46,9 +45,9 @@ const UpdateText = () => {
         }).then((data) => {
             console.log(data);
         })
-        .catch((err) => {
-            console.error(err)
-        })
+            .catch((err) => {
+                console.error(err)
+            })
     }
 
     const deleteText = (e: React.MouseEvent<HTMLButtonElement>, id: number) => {
@@ -69,20 +68,30 @@ const UpdateText = () => {
         <div className={styles.main}>
             {texts.map((el: Text) => <div key={el.id}>
                 <h1>{el.title}</h1>
-                <button onClick={(e) => forReviseText(e, el.id)} name="revise">수정</button>
+                <button onClick={(e : React.MouseEvent<HTMLButtonElement>) => {
+                    e.preventDefault();
+                    setIsRevised((prev) => !prev);
+                    setIsRevisedId(el.id);
+                }} name="revise">수정</button>
                 <button onClick={(e) => deleteText(e, el.id)} name="delete">삭제</button>
-                <div >
-                    <h3>제목</h3>
-                <input type="text"
-                 value={revisedText}
-                 onChange={(e) => setRevisedText(e.target.value)}
-                 ></input>
-                <h3>내용</h3>
-                <input type="text" 
-                value={revisedTitle}
-                onChange={(e) => setRevisedTitle(e.target.value)}
-                ></input>
-                </div>
+                {
+                    isRevised && isRevisedId === el.id ? <div >
+                        <h3>제목</h3>
+                        <input type="text"
+                            value={revisedTitle}
+                            onChange={(e) => setRevisedTitle(e.target.value)}
+                        ></input>
+                        <h3>내용</h3>
+                        <input type="text"
+                            value={revisedText}
+                            onChange={(e) => setRevisedText(e.target.value)}
+                        ></input>
+                        <button onClick={(e) => {
+                            setIsRevised((prev) => !prev);
+                            forReviseText(e, el.id)
+                        }} name="revise">수정 보내기</button>
+                    </div> : <></>
+                }
             </div>)}
         </div>
     );

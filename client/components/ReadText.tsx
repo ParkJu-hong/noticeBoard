@@ -23,8 +23,10 @@ const ReadText = () => {
         <div>
             {texts.map((el : Text,idx) => {
                 return <div key={idx}>
+                    <hr></hr>
                     <h1>{el.title}</h1>
                     <div>{el.text}</div>
+                    <hr></hr>
                 </div>
             })}
         </div>
