@@ -29,6 +29,7 @@ createConnection().then(async (connection) => {
             text: req.body.text
         })
         res.status(201).send("post success");
+        
     });
     //delete
     app.get('/text/:id', async (req: Request, res: Response) => {

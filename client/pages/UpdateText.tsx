@@ -38,10 +38,9 @@ const UpdateText = () => {
                 text: revisedText
             }
         }).then((data) => {
-            console.log(data);
             setRevisedText("");
             setRevisedTitle("");
-            setForCleanUp((prev) => !prev);
+            
         })
             .catch((err) => {
                 console.error(err)
