@@ -1,0 +1,11 @@
+{
+  "devDependencies": {
+    "@types/express-session": "^1.17.4",
+    "@types/passport": "^1.0.9",
+    "@types/passport-local": "^1.0.34",
+    "express-mysql-session": "^2.1.8",
+    "express-session": "^1.17.3",
+    "passport": "^0.6.0",
+    "passport-local": "^1.0.0"
+  }
+}

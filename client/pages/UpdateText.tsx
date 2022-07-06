@@ -40,7 +40,7 @@ const UpdateText = () => {
         }).then((data) => {
             setRevisedText("");
             setRevisedTitle("");
-            
+            setForCleanUp((prev) => !prev);
         })
             .catch((err) => {
                 console.error(err)
