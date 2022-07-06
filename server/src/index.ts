@@ -7,12 +7,12 @@ import session from 'express-session';
 import passport from 'passport';
 const passportConfig = require('./passport');
 
-import { User } from "./entity/User";
+// import { User } from "./entity/User";
 import { Text } from './entity/Text';
 const cors = require('cors');
 
 createConnection().then(async (connection) => {
-    const userRepository = await connection.getRepository(User);
+    // const userRepository = await connection.getRepository(User);
     const TextRepository = await connection.getRepository(Text);
 
     const app: Application = express();
@@ -26,6 +26,18 @@ createConnection().then(async (connection) => {
     app.use(passport.session()); // 세션 연결
     passportConfig();
 
+    // login
+    app.post('/login', passport.authenticate('local', {
+        failureRedirect: '/faillogin'
+    }), (req, res) => {
+        console.log("실행되나?  ?? ?");
+        res.redirect('/readtext');
+    })
+
+    app.get('/faillogin', async (req: Request, res: Response) => {
+        res.status(200).json({ message : "fail login"});
+    });
+
     // read
     app.get('/readtext', async (req: Request, res: Response) => {
         const result = await TextRepository.find();
@@ -38,7 +50,6 @@ createConnection().then(async (connection) => {
             text: req.body.text
         })
         res.status(201).send("post success");
-
     });
     //delete
     app.get('/text/:id', async (req: Request, res: Response) => {
