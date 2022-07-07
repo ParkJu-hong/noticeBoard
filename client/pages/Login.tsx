@@ -6,15 +6,12 @@ const Login = () => {
     const test = async () => {
         const formData = new FormData();
 
-        formData.set('id', 'test');
-        formData.set('pw', '12345');
+        formData.set('id', 'test2');
+        formData.set('pw', '123456');
 
-        axios({
-            method: 'post',
-            url: 'http://localhost:3000/test',
-            data: formData,
-            headers: {'Content-Type': 'multipart/form-data'}
-        })    .then(function (response) {
+        axios
+        .get('http://localhost:3000/test')
+        .then(function (response) {
             //handle success
             console.log(response);
         })
@@ -25,12 +22,12 @@ const Login = () => {
     }
 
     react.useEffect(()=>{
-        // test();
+        test();
     },[])
     return (
         <form id="form1" method="POST" action="http://localhost:3000/login">
-            <input type="text" name="id" value="test"/>
-            <input type="text" name="pw" value="12345"/>
+            <input type="text" name="id" value="test2"/>
+            <input type="text" name="pw" value="123456"/>
             <button id="btn1">submit</button>
     </form>
     );
