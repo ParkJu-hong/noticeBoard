@@ -2,7 +2,7 @@ import { Request } from 'express';
 const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
 
-module.exports = (userRepository : any) => {
+module.exports = (userRepository: any) => {
 
     passport.serializeUser((user: any, done: any) => {
         console.log("serializeUser 실행됌");
@@ -21,16 +21,16 @@ module.exports = (userRepository : any) => {
     }, async (id: any, pw: any, done: any) => {
 
         const result = await userRepository.findOne({
-           where: {
-            userId : id
-           } 
+            where: {
+                userId: id
+            }
         });
 
-        if(!result){
+        if (!result) {
             return done(null, false, { message: '존재하지 않는 아이디거나 비밀번호' });
         }
         console.log("로그인에 성공하였습니다");
         return done(null, { userId: result.userId }); // 여기에 메세지대신 유저의 정보를 보내는 것
-         // 그렇게 되면 serializeUser 첫번째인자의 콜백의 첫번째인자가 그데이터를 갖게됌
+        // 그렇게 되면 serializeUser 첫번째인자의 콜백의 첫번째인자가 그데이터를 갖게됌
     }))
 }

@@ -36,7 +36,7 @@ createConnection().then(async (connection) => {
 
     // login
     app.post('/login', passport.authenticate('local', {
-        failureRedirect: '/faillogin'
+        failureRedirect: 'http://localhost:3001/Login'
     }), (req, res) => {
         res.redirect('http://localhost:3001/');
     })
@@ -57,11 +57,13 @@ createConnection().then(async (connection) => {
     })
 
     app.get('/test', (req: Request, res: Response) => {
-        console.log(req.user)
-        res.writeHead(200, {
-            'Set-Cookie': ['yummy-cookie=choco', 'tasty-cookie=strawberry']
-        });
-        return res.json({ message : "fail login"});
+        req.session.destroy(()=>{});
+        return res.redirect('/readtext');
+        // console.log(req.user)
+        // res.writeHead(200, {
+        //     'Set-Cookie': ['yummy-cookie=choco', 'tasty-cookie=strawberry']
+        // });
+        // return res.json({ message : "fail login"});
     })
 
     app.get("/secrets", function (req, res) {

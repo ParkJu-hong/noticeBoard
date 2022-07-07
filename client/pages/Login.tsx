@@ -26,7 +26,7 @@ const Login = () => {
     },[])
     return (
         <form id="form1" method="POST" action="http://localhost:3000/login">
-            <input type="text" name="id" value="test2"/>
+            <input type="text" name="id" value="tesdwqdwt2"/>
             <input type="text" name="pw" value="123456"/>
             <button id="btn1">submit</button>
     </form>
