@@ -34,6 +34,30 @@ createConnection().then(async (connection) => {
     app.use(passport.session()); // 세션 연결
     passportConfig(userRepository);
 
+    /* test start */
+
+    app.get('/test', (req: Request, res: Response) => {
+        console.log("cookie : ", req.cookies);
+        res.writeHead(200, {
+            'Set-Cookie': ['yummy-cookie=choco', 'tasty-cookie=strawberry']
+        })
+        // req.session.destroy(()=>{});
+        return res.redirect('/readtext');
+        // console.log(req.user)
+        // res.writeHead(200, {
+        //     'Set-Cookie': ['yummy-cookie=choco', 'tasty-cookie=strawberry']
+        // });
+        // return res.json({ message : "fail login"});
+    })
+
+    app.get('/testt',(req: Request, res: Response) => {
+        passport.authorize('test2', { failureRedirect: '/readtext' });
+        return res.status(200).json({ message : "success!!"})
+    })
+    
+    /* test end */
+
+
     // login
     app.post('/login', passport.authenticate('local', {
         failureRedirect: 'http://localhost:3001/Login'
@@ -56,19 +80,10 @@ createConnection().then(async (connection) => {
         res.json({ message : "회원가입 되었습니다."})
     })
 
-    app.get('/test', (req: Request, res: Response) => {
-        req.session.destroy(()=>{});
-        return res.redirect('/readtext');
-        // console.log(req.user)
-        // res.writeHead(200, {
-        //     'Set-Cookie': ['yummy-cookie=choco', 'tasty-cookie=strawberry']
-        // });
-        // return res.json({ message : "fail login"});
-    })
-
     app.get("/secrets", function (req, res) {
         console.log(req.isAuthenticated());
-        if (!req.isAuthenticated()) {
+        if (req.isAuthenticated()) {
+            // 여기가 false가 나옴
           res.redirect("https://www.naver.com");
         } else {
           res.redirect('http://localhost:3001/Login');
