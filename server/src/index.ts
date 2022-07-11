@@ -14,7 +14,7 @@ import { Text } from './entity/Text';
 const cors = require('cors');
 
 createConnection().then(async (connection) => {
-    const userRepository = await connection.getRepository(User);
+    const UserRepository = await connection.getRepository(User);
     const TextRepository = await connection.getRepository(Text);
 
     const app: Application = express();
@@ -27,20 +27,21 @@ createConnection().then(async (connection) => {
         secret: 'dqwwdqddwq',
         resave: true,
         saveUninitialized: false,
-        
     })); // 세션 활성화
     app.use(cookieParser())
     app.use(passport.initialize()); // passport 구동
     app.use(passport.session()); // 세션 연결
-    passportConfig(userRepository);
+    passportConfig(UserRepository);
+
 
     /* test start */
 
     app.get('/test', (req: Request, res: Response) => {
-        console.log("cookie : ", req.cookies);
-        res.writeHead(200, {
-            'Set-Cookie': ['yummy-cookie=choco', 'tasty-cookie=strawberry']
-        })
+        // console.log("req.session : ", req.session);
+        // console.log("cookie : ", req.cookies);
+        // res.writeHead(200, {
+        //     'Set-Cookie': ['yummy-cookie=choco', 'tasty-cookie=strawberry']
+        // })
         // req.session.destroy(()=>{});
         return res.redirect('/readtext');
         // console.log(req.user)
@@ -48,7 +49,7 @@ createConnection().then(async (connection) => {
         //     'Set-Cookie': ['yummy-cookie=choco', 'tasty-cookie=strawberry']
         // });
         // return res.json({ message : "fail login"});
-    })
+    });
 
     app.get('/testt',(req: Request, res: Response) => {
         passport.authorize('test2', { failureRedirect: '/readtext' });
@@ -62,12 +63,13 @@ createConnection().then(async (connection) => {
     app.post('/login', passport.authenticate('local', {
         failureRedirect: 'http://localhost:3001/Login'
     }), (req, res) => {
-        res.redirect('http://localhost:3001/');
+        console.log("req.user : ", req.user);
+        return res.redirect('http://localhost:3001/');
     })
 
     // join
     app.post('/join', async (req: Request, res: Response) => {
-        const result = await userRepository.findOne({
+        const result = await UserRepository.findOne({
             where: {
                 userId: req.body.id
             }
@@ -76,7 +78,7 @@ createConnection().then(async (connection) => {
             return res.json({ message : "존재하는 아이디입니다"})
         }
 
-        await userRepository.insert({ pw : req.body.pw, userId: req.body.id});
+        await UserRepository.insert({ pw : req.body.pw, userId: req.body.id});
         res.json({ message : "회원가입 되었습니다."})
     })
 
@@ -84,9 +86,11 @@ createConnection().then(async (connection) => {
         console.log(req.isAuthenticated());
         if (req.isAuthenticated()) {
             // 여기가 false가 나옴
-          res.redirect("https://www.naver.com");
+            // 세션이 쿠키에 담겨있다면 여기는 true가 나와야하는데
+            // false가 나옴? 그럼 다른 방법을 사용해야함?
+          return res.redirect("https://www.naver.com");
         } else {
-          res.redirect('http://localhost:3001/Login');
+          return res.redirect('http://localhost:3001/Login');
         }
       });
 

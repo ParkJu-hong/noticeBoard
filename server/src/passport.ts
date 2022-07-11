@@ -22,7 +22,8 @@ module.exports = (userRepository: any) => {
 
         const result = await userRepository.findOne({
             where: {
-                userId: id
+                userId: id,
+                pw
             }
         });
 
