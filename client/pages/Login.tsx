@@ -1,18 +1,27 @@
-import react from "react";
+import react, { useState } from "react";
 import axios from "axios";
 import { useQRCode } from 'next-qrcode';
 import { useBarcode } from 'next-barcode';
 
+import { MultiFormatReader, BarcodeFormat } from '@zxing/library';
+
 const Login = () => {
 
-    const { Canvas } = useQRCode();
+    const [testTwo, setTestTwo] = useState({
+        name: "ParkJuHong",
+        age: 24
+    })
 
+    const { Canvas } = useQRCode();
     const { inputRef } = useBarcode({
-        value: 'next-barcode',
+        value: `{
+            name: "ParkJuHong",
+            age: 24
+        }`,
         options: {
           background: '#ccffff',
         }
-      });
+    });
 
     const test = async () => {
         const formData = new FormData();
@@ -43,7 +52,10 @@ const Login = () => {
                 <button id="btn1">submit</button>
             </form>
             <Canvas
-                text={'https://github.com/bunlong/next-qrcode'}
+                text={`{
+                    message : "dwdw",
+                    Firstname: "Park",
+                }`}
                 options={{
                     type: 'image/jpeg',
                     quality: 0.3,

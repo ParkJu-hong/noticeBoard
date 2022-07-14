@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@zxing/library": "^0.19.1",
     "axios": "^0.27.2",
     "next": "12.2.0",
     "next-barcode": "^1.4.0",
